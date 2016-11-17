@@ -16,43 +16,45 @@ class StockCode(models.Model):
     name_eng = models.CharField(max_length=100)
     lot_size = models.PositiveIntegerField(default=0)
 
+    def __str__(self):
+        return "%s" % self.code
+
 
 class Project:
-    IPO = 1
-    LONG = 2
-    SHORT = 3
+    IPO = "IPO"
+    LONG = "Long"
+    SHORT = "Short"
 
 
 class StockIn(models.Model):
     project_choices = [
         (Project.IPO, "IPO"),
-        (Project.LONG, "LONG"),
-        (Project.SHORT, "SHORT"),
+        (Project.LONG, "Long"),
+        (Project.SHORT, "Short"),
 
     ]
-    code = models.ForeignKey(StockCode)
     add_date = models.DateField()
-    broker = models.ForeignKey(Broker)
-    project = models.PositiveSmallIntegerField(choices=project_choices)
-    money = models.DecimalField(max_length=14, max_digits=4)
-    price = models.DecimalField(max_length=14, max_digits=4)
+    code = models.ForeignKey(StockCode)
+    project = models.CharField(max_length=10, choices=project_choices)
+    money = models.DecimalField(max_digits=14, decimal_places=4)
     quantity = models.PositiveSmallIntegerField()
-    parent = models.ForeignKey("StockIn")
+    price = models.DecimalField(max_digits=14, decimal_places=4)
+    broker = models.ForeignKey(Broker, null=True, blank=True)
 
 
 class MoneyIn(models.Model):
     stock = models.ForeignKey(StockIn)
     add_date = models.DateField()
-    money = models.DecimalField(max_length=14, max_digits=4)
-    price = models.DecimalField(max_length=14, max_digits=4)
+    money = models.DecimalField(max_digits=14, decimal_places=4)
+    price = models.DecimalField(max_digits=14, decimal_places=4)
     quantity = models.PositiveSmallIntegerField()
 
 
 class Dividend(models.Model):
     stock = models.ForeignKey(StockIn)
     add_date = models.DateField()
-    money = models.DecimalField(max_length=14, max_digits=4)
-    price = models.DecimalField(max_length=14, max_digits=4)
+    money = models.DecimalField(max_digits=14, decimal_places=4)
+    price = models.DecimalField(max_digits=14, decimal_places=4)
     quantity = models.PositiveSmallIntegerField()
 
 

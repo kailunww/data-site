@@ -9,6 +9,12 @@ class StockCodeAdmin(admin.ModelAdmin):
     # list_filter = ('is_enable',)
 
 
+@admin.register(StockIn)
+class StockInAdmin(admin.ModelAdmin):
+    # pass
+    list_display = ("add_date", "code", "price", "project", "quantity", "money")
+
+
 @admin.register(Broker)
 class BrokerAdmin(admin.ModelAdmin):
     list_display = ("id", "name", )
