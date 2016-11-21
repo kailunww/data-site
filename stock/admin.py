@@ -9,10 +9,32 @@ class StockCodeAdmin(admin.ModelAdmin):
     # list_filter = ('is_enable',)
 
 
-@admin.register(StockIn)
-class StockInAdmin(admin.ModelAdmin):
+@admin.register(StockMaster)
+class StockMasterAdmin(admin.ModelAdmin):
     # pass
     list_display = ("add_date", "code", "price", "project", "quantity", "money")
+    search_fields = ("code__code", )
+
+
+@admin.register(StockAdd)
+class StockAddAdmin(admin.ModelAdmin):
+    # pass
+    list_display = ("add_date", "master", "price", "quantity", "money")
+    search_fields = ("master__code__code", )
+
+
+@admin.register(MoneyIn)
+class MoneyInAdmin(admin.ModelAdmin):
+    # pass
+    list_display = ("add_date", "master", "price", "quantity", "money")
+    search_fields = ("master__code__code", )
+
+
+@admin.register(Dividend)
+class DividendAdmin(admin.ModelAdmin):
+    # pass
+    list_display = ("add_date", "master", "price",  "money")
+    search_fields = ("master__code__code", )
 
 
 @admin.register(Broker)
