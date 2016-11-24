@@ -1,15 +1,25 @@
-from celery import Celery
+import requests
+import datetime
+from decimal import Decimal
 
-app = Celery('datasite', backend='rpc://',  broker='pyamqp://guest@localhost//')
+
+start_date = "2015-10-01"
+code = "0005"
+url = "http://real-chart.finance.yahoo.com/table.csv?s=%s.HK&g=v&ignore=.csv" % code
+
+r = requests.get(url)
+lines = r.iter_lines()
+div_list = []
+lines.__next__()
+for line in lines:
+    div_date, price = line.decode().split(",")
+    if div_date <= start_date:
+        break
+    div_list.append((div_date, price))
+print(div_list)
+# url = "http://real-chart.finance.yahoo.com/table.csv?s=%s.HK&g=d&ignore=.csv" % code
+#
+# r = requests.get(url)
+# print(r.text)
 
 
-@app.task
-def add(x, y):
-    return x + y
-
-result = add.delay(4, 4)
-print(result.backend)
-a = result.ready()
-print(a)
-a = result.get(timeout=100)
-print(a)
